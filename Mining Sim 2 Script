@@ -1,0 +1,63 @@
+getgenv().autoHatch = false
+getgenv().autoRebirth = false
+getgenv().autoSell = false
+getgenv().egg = ''
+getgenv().world = ''
+
+local eggs = {
+	[1] = 'Basic Egg',
+	[2] = 'Spotted Egg',
+	[3] = 'Forest Egg',
+	[4] = 'Exotic Egg',
+	[5] = 'Artic Egg',
+	[6] = 'Ice Egg',
+	[7] = 'Dark Egg',
+	[8] = 'Volcanic Egg',
+	[9] = 'Underworld Egg',
+}
+
+local library = loadstring(game:HttpGet(('https://raw.githubusercontent.com/AikaV3rm/UiLib/master/Lib.lua')))()
+local w = library:CreateWindow("Mining Simulator 2")
+local a = w:CreateFolder("Auto")
+
+a:Toggle("Auto Hatch",function(bool)
+    autoHatch = bool
+    spawn(function()
+        while autoHatch do
+            wait(0.01)
+            local args = {
+    [1] = egg
+}
+
+game:GetService("ReplicatedStorage").Events.OpenEgg:FireServer(unpack(args))
+        end
+    end)
+end)
+
+a:Toggle("Auto Rebirth",function(bool)
+	autoRebirth = bool
+	spawn(function()
+		while autoRebirth do
+			wait()
+			game:GetService("ReplicatedStorage").Events.Rebirth:FireServer()
+		end
+	end)
+end)
+
+a:Toggle("Auto Sell",function(bool)
+	autoSell = bool
+	spawn(function()
+		while autoSell do
+			wait()
+			local args = {
+    [1] = "The UnderworldSell"
+}
+
+game:GetService("ReplicatedStorage").Events.Teleport:FireServer(unpack(args))
+		end
+	end)
+end)
+
+a:Dropdown("Egg",{unpack(eggs)},true,function(mob) 
+    egg = mob
+end)
